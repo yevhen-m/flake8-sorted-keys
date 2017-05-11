@@ -3,10 +3,10 @@
 test: pep8
 	green -vv --run-coverage
 
-develop-install:
+dev-install:
 	python setup.py develop
 
-develop-uninstall:
+dev-uninstall:
 	python setup.py develop --uninstall
 
 pep8:
