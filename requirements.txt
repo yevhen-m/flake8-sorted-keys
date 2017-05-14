@@ -1,3 +1,4 @@
 coverage
 flake8
 green
+ipython<6.0.0

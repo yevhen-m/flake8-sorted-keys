@@ -1,4 +1,4 @@
-.PHONY: develop-install develop-uninstall test pep8
+.PHONY: dev-install dev-uninstall test pep8 shell
 
 test: pep8
 	green -vv --run-coverage
@@ -11,3 +11,6 @@ dev-uninstall:
 
 pep8:
 	flake8
+
+shell:
+	ipython
