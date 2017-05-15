@@ -1,4 +1,4 @@
-|Build Status|
+|Build Status| |Python Versions| |Licence|
 
 flake8-sorted-keys
 ==================
@@ -7,3 +7,5 @@ Don't make YB sad, keep keys sorted.
 
 .. |Build Status| image:: https://travis-ci.org/yevhen-m/flake8-sorted-keys.svg?branch=master
    :target: https://travis-ci.org/yevhen-m/flake8-sorted-keys
+.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/Django.svg?maxAge=3600
+.. |Licence| image:: https://img.shields.io/dub/l/vibe-d.svg?maxAge=3600
