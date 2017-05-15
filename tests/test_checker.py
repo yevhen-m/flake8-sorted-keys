@@ -70,7 +70,7 @@ class SortedKeysCheckerNegativeBaseTestCase(SortedKeysCheckerBaseTestCase):
 
         self.assertFalse(lint_errors)
 
-    @unittest.skip(ver_maj > 2 and ver_min > 4)
+    @unittest.skipIf(sys.version_info < (3, 5), 'Need higher python version')
     def test_embedded_unpacking(self):
         code = '''dict_literal = {
                     'a': 'a',
