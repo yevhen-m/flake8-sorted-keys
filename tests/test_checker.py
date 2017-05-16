@@ -5,9 +5,6 @@ import unittest
 from flake8_sorted_keys import SortedKeysChecker
 
 
-ver_maj, ver_min = sys.version_info.major, sys.version_info.minor
-
-
 class SortedKeysCheckerBaseTestCase(unittest.TestCase):
 
     def check_snippet(self, code_snippet, filename='__main__'):
@@ -71,7 +68,7 @@ class SortedKeysCheckerNegativeBaseTestCase(SortedKeysCheckerBaseTestCase):
 
         self.assertFalse(lint_errors)
 
-    @unittest.skipIf(sys.version_info < (3, 5), 'Need higher python version')
+    @unittest.skipIf(sys.version_info < (3, 5), 'python3.5+ syntax')
     def test_embedded_unpacking(self):
         code = '''dict_literal = {
                     'a': 'a',
