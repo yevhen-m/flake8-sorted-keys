@@ -7,7 +7,7 @@ class SortedKeysChecker(object):
     name = 'flake8-sorted-keys'
     version = __version__
 
-    unsorted_message = 'S001 Sort keys. \'{0}\' should be before \'{1}\'.'
+    unsorted_message = "S001 Sort keys. '{0}' should be before '{1}'."
 
     def __init__(self, tree, *args, **kwargs):
         self.tree = tree
