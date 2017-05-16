@@ -29,18 +29,19 @@ class SortedKeysCheckerPositiveBaseTestCase(SortedKeysCheckerBaseTestCase):
         self.assertEqual(len(lint_errors), 1)
         first_error = lint_errors[0]
         line, offset, msg, _ = first_error
+        self.assertEqual(line, 4)
         self.assertIn('S001', msg)
 
     def test_unsorted_keys_embedded_dicts(self):
-        code = '''dict_literal = {   # 1  <--
+        code = '''dict_literal = {   # 1
                     'a': 'a',        # 2
                     'c': 'c',        # 3
-                    'd': {           # 4  <--
+                    'd': {           # 4
                         'd': 'd',    # 5
                         'f': 'f',    # 6
-                        'b': 'b',    # 7
+                        'b': 'b',    # 7  <--
                     },               # 8
-                    'b': 'b',        # 9
+                    'b': 'b',        # 9  <--
                   }'''
         lint_errors = self.check_snippet(code)
 
@@ -49,11 +50,11 @@ class SortedKeysCheckerPositiveBaseTestCase(SortedKeysCheckerBaseTestCase):
 
         line, offset, msg, _ = first_error
         self.assertIn('S001', msg)
-        self.assertEqual(line, 1)
+        self.assertEqual(line, 9)
 
         line, offset, msg, _ = second_error
         self.assertIn('S001', msg)
-        self.assertEqual(line, 4)
+        self.assertEqual(line, 7)
 
 
 class SortedKeysCheckerNegativeBaseTestCase(SortedKeysCheckerBaseTestCase):

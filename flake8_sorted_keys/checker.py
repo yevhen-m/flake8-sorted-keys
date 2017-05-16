@@ -25,11 +25,11 @@ class SortedKeysChecker(object):
     def run(self):
         for node in ast.walk(self.tree):
             if isinstance(node, ast.Dict) and self.needs_checking(node):
-                str_keys = [k.s for k in node.keys]
-                if str_keys != sorted(str_keys):
-                    yield (
-                        node.lineno,
-                        node.col_offset,
-                        self.unsorted_message,
-                        type(self),
-                    )
+                for key1, key2 in zip(node.keys, node.keys[1:]):
+                    if key2.s < key1.s:
+                        yield (
+                            key2.lineno,
+                            key2.col_offset,
+                            self.unsorted_message,
+                            type(self),
+                        )
