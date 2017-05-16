@@ -30,7 +30,7 @@ class SortedKeysCheckerPositiveBaseTestCase(SortedKeysCheckerBaseTestCase):
         first_error = lint_errors[0]
         line, offset, msg, _ = first_error
         self.assertEqual(line, 4)
-        self.assertIn('S001', msg)
+        self.assertEqual(msg, 'S001 Sort keys. \'b\' should be before \'c\'.')
 
     def test_unsorted_keys_embedded_dicts(self):
         code = '''dict_literal = {   # 1
