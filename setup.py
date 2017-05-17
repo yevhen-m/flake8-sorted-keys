@@ -7,7 +7,7 @@ install_requires = [
 setuptools.setup(
     name="flake8_sorted_keys",
     license="MIT",
-    version="0.0.1",
+    version="0.1.0",
     description="check keys are sorted in dict literals",
     author="yevhen-m, eprykhodko",
     url="https://gitlab.com/yevhen-m/flake8-sorted-keys",
