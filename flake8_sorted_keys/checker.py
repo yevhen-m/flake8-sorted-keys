@@ -33,3 +33,4 @@ class SortedKeysChecker(object):
                             self.message.format(key2.s, key1.s),
                             type(self),
                         )
+                        break
