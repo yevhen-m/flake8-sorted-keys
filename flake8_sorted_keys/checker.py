@@ -31,6 +31,7 @@ class SortedKeysChecker(object):
         """
         if not all(isinstance(key, ast.Str) for key in dict_node.keys):
             return False
+        
         if self.noqa(dict_node):
             return False
 
