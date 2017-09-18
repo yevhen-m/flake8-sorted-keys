@@ -9,7 +9,7 @@ class SortedKeysCheckerBaseTestCase(unittest.TestCase):
     def check_snippet(self, code_snippet):
         checker = SortedKeysChecker(
             tree=None,
-            lines=code_snippet.splitlines(keepends=True)
+            lines=code_snippet.splitlines(True)
         )
         return list(checker.run())
 
