@@ -1,6 +1,9 @@
 __version__ = '0.1.0'
 
 import ast
+import re
+
+NOQA_REGEX = re.compile(r'#\s*noqa(?=(:.*?S001|$))', re.I)
 
 
 class SortedKeysChecker(object):
@@ -9,16 +12,25 @@ class SortedKeysChecker(object):
 
     message = "S001 Sort keys. '{0}' should be before '{1}'."
 
-    def __init__(self, tree, *args, **kwargs):
-        self.tree = tree
+    def __init__(self, tree, lines, *args, **kwargs):
+        self.lines = lines
+        self.tree = tree or ast.parse(''.join(lines))
+
+    def noqa(self, dict_node):
+        """Check if dict contains noqa comment."""
+        # ast enumerates lines starting from 1
+        return NOQA_REGEX.search(self.lines[dict_node.lineno - 1]) is not None
 
     def needs_checking(self, dict_node):
-        """Decide weather specific Dict literal node needs to be considered.
+        """Decide if specific Dict literal node needs to be considered.
 
         We are only interested in multi-line dicts with all string keys.
         """
         if not all(isinstance(key, ast.Str) for key in dict_node.keys):
             return False
+        if self.noqa(dict_node):
+            return False
+
         line_numbers = [key.lineno for key in dict_node.keys]
         return len(line_numbers) == len(set(line_numbers))
 

@@ -1,4 +1,3 @@
-import ast
 import sys
 import unittest
 
@@ -7,9 +6,11 @@ from flake8_sorted_keys import SortedKeysChecker
 
 class SortedKeysCheckerBaseTestCase(unittest.TestCase):
 
-    def check_snippet(self, code_snippet, filename='__main__'):
-        tree = ast.parse(code_snippet)
-        checker = SortedKeysChecker(tree, filename)
+    def check_snippet(self, code_snippet):
+        checker = SortedKeysChecker(
+            tree=None,
+            lines=code_snippet.splitlines(keepends=True)
+        )
         return list(checker.run())
 
 
@@ -53,6 +54,19 @@ class SortedKeysCheckerPositiveBaseTestCase(SortedKeysCheckerBaseTestCase):
         self.assertIn('S001', msg)
         self.assertEqual(line, 7)
 
+    def test_noqa_nonmatching_rules(self):
+        code = '''dict_literal = {  # noqa: E001, Q123
+                    'a': 'a',
+                    'c': 'c',
+                    'b': 'b',
+                  }'''
+        lint_errors = self.check_snippet(code)
+        self.assertEqual(len(lint_errors), 1)
+        first_error = lint_errors[0]
+        line, offset, msg, _ = first_error
+        self.assertEqual(line, 4)
+        self.assertEqual(msg, "S001 Sort keys. 'b' should be before 'c'.")
+
 
 class SortedKeysCheckerNegativeBaseTestCase(SortedKeysCheckerBaseTestCase):
 
@@ -78,4 +92,22 @@ class SortedKeysCheckerNegativeBaseTestCase(SortedKeysCheckerBaseTestCase):
                   }'''
         lint_errors = self.check_snippet(code)
 
+        self.assertFalse(lint_errors)
+
+    def test_noqa(self):
+        code = '''dict_literal = {  # noqa
+                    'a': 'a',
+                    'c': 'c',
+                    'b': 'b',
+                  }'''
+        lint_errors = self.check_snippet(code)
+        self.assertFalse(lint_errors)
+
+    def test_noqa_explicit_rules(self):
+        code = '''dict_literal = {  # noqa: E001, S001, Q123
+                    'a': 'a',
+                    'c': 'c',
+                    'b': 'b',
+                  }'''
+        lint_errors = self.check_snippet(code)
         self.assertFalse(lint_errors)
