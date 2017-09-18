@@ -3,7 +3,10 @@ __version__ = '0.1.0'
 import ast
 import re
 
-NOQA_REGEX = re.compile(r'#\s*noqa(?=(:.*?S001|$))', re.I)
+NOQA_REGEX = re.compile(r'''
+    \#\s*noqa  # noqa comment
+    (?=(:.*?S001|$))  # optional rules (if present, must contain S001)
+''', re.IGNORECASE | re.VERBOSE)
 
 
 class SortedKeysChecker(object):
