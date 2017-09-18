@@ -19,20 +19,17 @@ class SortedKeysChecker(object):
         self.lines = lines
         self.tree = tree or ast.parse(''.join(lines))
 
-    def noqa(self, dict_node):
-        """Check if dict contains noqa comment."""
-        # ast enumerates lines starting from 1
-        return NOQA_REGEX.search(self.lines[dict_node.lineno - 1]) is not None
-
     def needs_checking(self, dict_node):
         """Decide if specific Dict literal node needs to be considered.
 
-        We are only interested in multi-line dicts with all string keys.
+        We are only interested in multi-line dicts with all string keys and
+        without "noqa" comment.
         """
         if not all(isinstance(key, ast.Str) for key in dict_node.keys):
             return False
-        
-        if self.noqa(dict_node):
+
+        # check if dict contains "noqa" comment
+        if NOQA_REGEX.search(self.lines[dict_node.lineno - 1]) is not None:
             return False
 
         line_numbers = [key.lineno for key in dict_node.keys]
